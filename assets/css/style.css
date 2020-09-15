@@ -74,23 +74,10 @@ footer input{
 .reservado{
     background-color: #FFDEDE;
 }
-.reservado .usuario::after{
-    content: "reservadamente para";
-    font-weight: normal;
-    margin: 0px 2px;
-}
 .publico{
     background-color: #FFF;
 }
-.publico .usuario::after{
-    content: "para";
-    font-weight: normal;
-    margin: 0px 2px;
-}
-.destinatario::after{
-    content: ":";
-    margin-right: 2px;
-}
+
 
 /*estilos dos elementos dentro das caixa mensagem*/
 .mensagem time{
@@ -107,4 +94,20 @@ footer input{
 .mensagem p{
     margin-left: 5px;
     font-size: 16px;
+}
+
+/*adição dos textos entre usuario e destinario*/
+.reservado .usuario::after{
+    content: "reservadamente para";
+    font-weight: normal;
+    margin: 0px 2px;
+}
+.publico .usuario::after{
+    content: "para";
+    font-weight: normal;
+    margin: 0px 2px;
+}
+.destinatario::after{
+    content: ":";
+    margin-right: 2px;
 }
