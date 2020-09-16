@@ -3,21 +3,48 @@ var windowHeight = window.innerHeight + 75;
 var listaParticipantes = document.querySelector('.participantes');
 var mensagens;
 var participantes;
-var meuUsuario = "Mévio";
+var meuUsuario = {};
 var destinatario = "Todos";
 
-setInterval(buscarMensagens,3000);
-setInterval(buscarParticipantes,10000);
+iniciarChat();
+
+function iniciarChat(){
+    meuUsuario.name = prompt("Qual o seu nome?");
+
+    enviaUsuario();
+
+    setInterval(buscarMensagens,3000);
+    setInterval(buscarParticipantes,10000);
+}
+
 
 
 function buscarMensagens(){
-    var requisicao = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/messages');
-    requisicao.then(processarMensagens);
+    axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/messages').then(processarMensagens);
 }
 
 function buscarParticipantes(){
-    var requisicao = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/participants');
-    requisicao.then(processarParticipantes);
+    axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/participants').then(processarParticipantes);
+}
+
+function enviaUsuario(){
+    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/participants',meuUsuario).catch(erroNomeUsuario).then(enviarStatus)
+}
+
+function enviarStatus(){
+    setInterval(function (){
+        axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/status', meuUsuario);
+    },3000)
+}
+
+function enviarMensagem(){
+    var dados = montarMensagem();
+
+    if(dados !== null){
+        axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/messages',dados).catch(processarErroPost);
+    }else{
+        return
+    }
 }
 
 function processarMensagens(resposta){
@@ -30,26 +57,19 @@ function processarParticipantes(resposta){
     renderizarParticipantes();
 }
 
-function mostrarMenu(){
-    var menu = document.querySelector("aside");
-    menu.classList.toggle('ativado')
-}
-
-function enviarMensagem(){
-    var dados = montarMensagem();
-
-    if(dados !== null){
-        var envioMensagem = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/messages',dados);
-        envioMensagem.catch(processarErroPost);
-    }else{
-        console.log("mensagem vazia");
-    }
-
-}
-
 function processarErroPost(resposta){
     console.log("deu erro");
     window.location.reload();
+}
+
+function erroNomeUsuario(erro){
+    console.log(erro);
+    meuUsuario.name = prompt("Este nome já está em uso, digite um novo nome?");
+}
+
+function mostrarMenu(){
+    var menu = document.querySelector("aside");
+    menu.classList.toggle('ativado')
 }
 
 function montarMensagem(input){
@@ -61,11 +81,11 @@ function montarMensagem(input){
         return null;
     }else{
         var dados = {
-            "from": meuUsuario,
+            "from": meuUsuario.name,
             "to": destinatario,
             "text": textoMensagem,
             "type": "message",
-            "time": time
+            "time": "00:00:00"
         }
         input.value = "";
     
