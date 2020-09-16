@@ -1,7 +1,7 @@
 var main = document.querySelector('main');
 var mensagens;
 var participantes;
-var usuario = "";
+var meuUsuario = "João";
 
 //setInterval(buscarMensagens,3000);
 buscarMensagens();
@@ -30,11 +30,6 @@ function renderizarMensagem(elemento){
     var tipo = verificaTipo(elemento.type); 
     divMensagem.classList.add(tipo);
 
-
-            //verifica se o user é destinatario ou remetente
-                //add class reservado
-                //se não: não insere
-    
     var time = criarElemento("time");
     time.innerText = elemento.time;
 
@@ -47,13 +42,16 @@ function renderizarMensagem(elemento){
     var texto = criarElemento("p");
     texto.innerText = elemento.text;
 
-    if(tipo === "entrouOuSaiu"){
-        var filhos = [time, divUsuario, texto];
-        vincularFilhos(main,divMensagem,filhos);
-    }else{
-        var filhos = [time,divUsuario,divDestinatario,texto];
-        vincularFilhos(main,divMensagem,filhos);
+    var checagemReservado = verificaMensagemPrivada(tipo,elemento.from,elemento.to);
+    console.log(checagemReservado,divMensagem);
+
+    //verificação se o tipo é status para decidir se renderiza ou não o destinatario
+    var filhos = verificacaoTipoStatusAntesRenderizar(tipo,divMensagem,time,divUsuario,divDestinatario,texto);
+    
+    if(checagemReservado === "ocultar"){
+        return;
     }
+    vincularFilhos(main,divMensagem,filhos);
 }
 
 function criarElemento(elemento,classe){
@@ -69,6 +67,26 @@ function verificaTipo(tipo){
         return "publico";
     }else if(tipo === "private_message"){
         return "reservado";
+    }
+}
+
+function verificaMensagemPrivada(tipo, usuarioOrigem,usuarioDestino){
+    if(tipo === "reservado"){
+        if(meuUsuario === usuarioOrigem || meuUsuario === usuarioDestino)
+            return "exibir";
+        else
+            return "ocultar";
+    }else{
+        return "exibir";
+    }
+}
+
+function verificacaoTipoStatusAntesRenderizar(tipo,divMensagem,time,divUsuario,divDestinatario,texto){
+    if(tipo === "entrouOuSaiu"){
+        return [time, divUsuario, texto];
+        
+    }else{
+        return [time,divUsuario,divDestinatario,texto];
     }
 }
 
