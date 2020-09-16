@@ -39,6 +39,7 @@ function renderizarChat(){
     for(var i = 0; i < mensagens.length; i++){
         renderizarMensagem(mensagens[i]);
     }
+    main.scrollIntoView({block: "end"});
 }
 
 function renderizarParticipantes(){
