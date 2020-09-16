@@ -4,9 +4,9 @@ var mensagens;
 var participantes;
 var meuUsuario = "João";
 
-//setInterval(buscarMensagens,3000);
-buscarMensagens();
-buscarParticipantes();
+setInterval(buscarMensagens,3000);
+setInterval(buscarParticipantes,5000);
+
 
 function buscarMensagens(){
     var requisicao = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/messages');
