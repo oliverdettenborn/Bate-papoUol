@@ -1,8 +1,10 @@
 var main = document.querySelector('main');
+var windowHeight = window.innerHeight + 75;
 var listaParticipantes = document.querySelector('.participantes');
 var mensagens;
 var participantes;
-var meuUsuario = "João";
+var meuUsuario = "Mévio";
+var destinatario = "Todos";
 
 setInterval(buscarMensagens,3000);
 setInterval(buscarParticipantes,10000);
@@ -33,13 +35,53 @@ function mostrarMenu(){
     menu.classList.toggle('ativado')
 }
 
+function enviarMensagem(){
+    var dados = montarMensagem();
+
+    if(dados !== null){
+        var envioMensagem = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/messages',dados);
+        envioMensagem.catch(processarErroPost);
+    }else{
+        console.log("mensagem vazia");
+    }
+
+}
+
+function processarErroPost(resposta){
+    console.log("deu erro");
+    window.location.reload();
+}
+
+function montarMensagem(input){
+    var input = document.querySelector("#postarMensagem");
+    var textoMensagem = input.value.trim();
+    var time = pegarHoras();
+
+    if(textoMensagem === ""){
+        return null;
+    }else{
+        var dados = {
+            "from": meuUsuario,
+            "to": destinatario,
+            "text": textoMensagem,
+            "type": "message",
+            "time": time
+        }
+        input.value = "";
+    
+        renderizarMensagem(dados);
+    
+        return dados;
+    }
+}
+
 function renderizarChat(){
     main.innerHTML = "";
     //percorrer array
     for(var i = 0; i < mensagens.length; i++){
         renderizarMensagem(mensagens[i]);
     }
-    main.scrollIntoView({block: "end"});
+    window.scrollTo(0,document.body.scrollHeight);
 }
 
 function renderizarParticipantes(){
@@ -50,8 +92,6 @@ function renderizarParticipantes(){
     for(var i = 0; i < participantes.length; i++){
         criarLiParticipantes(participantes[i].name);
     }
-
-    console.log(listaParticipantes);
 }
 
 function renderizarMensagem(elemento){
@@ -140,4 +180,10 @@ function vincularFilhos(elementoHTML,pai,filhos){
         pai.appendChild(arrayFilhos[i]);
     }
     elementoHTML.appendChild(pai);
+}
+
+function pegarHoras(){
+    var data = new Date();
+    var horario = data.getHours() + ":" +  data.getMinutes() + ":" + + data.getSeconds();
+    return horario;
 }

@@ -7,6 +7,9 @@ body{
     margin-top: 95px;
     letter-spacing: 1px;
 }
+main{
+    margin-bottom: 80px;
+}
 
 /*estilos gerais do cabeçalho e do rodapé*/
 header, footer{
