@@ -10,14 +10,23 @@ iniciarChat();
 
 function iniciarChat(){
     meuUsuario.name = prompt("Qual o seu nome?");
-
     enviaUsuario();
+}
 
+function enviaUsuario(){
+    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/participants',meuUsuario).catch(erroNomeUsuario).then(processarSucessoEntradaUsuario)
+}
+
+function processarSucessoEntradaUsuario(){
+    setInterval(enviarStatus,3000)
     setInterval(buscarMensagens,3000);
     setInterval(buscarParticipantes,10000);
 }
 
-
+function erroNomeUsuario(erro){
+    console.log(erro);
+    meuUsuario.name = prompt("Este nome já está em uso, digite um novo nome?");
+}
 
 function buscarMensagens(){
     axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/messages').then(processarMensagens);
@@ -27,24 +36,8 @@ function buscarParticipantes(){
     axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/participants').then(processarParticipantes);
 }
 
-function enviaUsuario(){
-    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/participants',meuUsuario).catch(erroNomeUsuario).then(enviarStatus)
-}
-
 function enviarStatus(){
-    setInterval(function (){
-        axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/status', meuUsuario);
-    },3000)
-}
-
-function enviarMensagem(){
-    var dados = montarMensagem();
-
-    if(dados !== null){
-        axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/messages',dados).catch(processarErroPost);
-    }else{
-        return
-    }
+    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/status', meuUsuario);
 }
 
 function processarMensagens(resposta){
@@ -62,9 +55,14 @@ function processarErroPost(resposta){
     window.location.reload();
 }
 
-function erroNomeUsuario(erro){
-    console.log(erro);
-    meuUsuario.name = prompt("Este nome já está em uso, digite um novo nome?");
+function enviarMensagem(){
+    var dados = montarMensagem();
+
+    if(dados !== null){
+        axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/messages',dados).catch(processarErroPost);
+    }else{
+        return
+    }
 }
 
 function mostrarMenu(){
