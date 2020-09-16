@@ -28,6 +28,10 @@ function processarParticipantes(resposta){
     renderizarParticipantes();
 }
 
+function mostrarMenu(){
+    var menu = document.querySelector("aside");
+    menu.classList.toggle('ativado')
+}
 
 function renderizarChat(){
     main.innerHTML = "";
