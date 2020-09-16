@@ -5,7 +5,7 @@ var participantes;
 var meuUsuario = "João";
 
 setInterval(buscarMensagens,3000);
-setInterval(buscarParticipantes,5000);
+setInterval(buscarParticipantes,10000);
 
 
 function buscarMensagens(){
