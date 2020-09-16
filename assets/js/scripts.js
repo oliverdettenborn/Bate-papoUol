@@ -1,14 +1,21 @@
 var main = document.querySelector('main');
+var listaParticipantes = document.querySelector('.participantes');
 var mensagens;
 var participantes;
 var meuUsuario = "João";
 
 //setInterval(buscarMensagens,3000);
 buscarMensagens();
+buscarParticipantes();
 
 function buscarMensagens(){
     var requisicao = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/messages');
     requisicao.then(processarMensagens);
+}
+
+function buscarParticipantes(){
+    var requisicao = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/participants');
+    requisicao.then(processarParticipantes);
 }
 
 function processarMensagens(resposta){
@@ -16,12 +23,30 @@ function processarMensagens(resposta){
     renderizarChat();
 }
 
+function processarParticipantes(resposta){
+    participantes = resposta.data;
+    renderizarParticipantes();
+}
+
+
 function renderizarChat(){
     main.innerHTML = "";
     //percorrer array
     for(var i = 0; i < mensagens.length; i++){
         renderizarMensagem(mensagens[i]);
     }
+}
+
+function renderizarParticipantes(){
+    listaParticipantes.innerHTML = "";
+
+    criarLiParticipantes("Todos");
+
+    for(var i = 0; i < participantes.length; i++){
+        criarLiParticipantes(participantes[i].name);
+    }
+
+    console.log(listaParticipantes);
 }
 
 function renderizarMensagem(elemento){
@@ -43,7 +68,6 @@ function renderizarMensagem(elemento){
     texto.innerText = elemento.text;
 
     var checagemReservado = verificaMensagemPrivada(tipo,elemento.from,elemento.to);
-    console.log(checagemReservado,divMensagem);
 
     //verificação se o tipo é status para decidir se renderiza ou não o destinatario
     var filhos = verificacaoTipoStatusAntesRenderizar(tipo,divMensagem,time,divUsuario,divDestinatario,texto);
@@ -58,6 +82,20 @@ function criarElemento(elemento,classe){
     var elementoCriado = document.createElement(elemento);
     elementoCriado.classList.add(classe);
     return elementoCriado;
+}
+
+function criarLiParticipantes(participante){
+    var li = document.createElement('li');
+    li.setAttribute('onclick','check(this)');
+
+    var icone = document.createElement('ion-icon');
+    icone.setAttribute('name','people');
+
+    var texto = document.createElement('h6');
+    texto.innerText = participante;
+
+    var filhos = [icone,texto];
+    vincularFilhos(listaParticipantes,li,filhos);
 }
 
 function verificaTipo(tipo){
