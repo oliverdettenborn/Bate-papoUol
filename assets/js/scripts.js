@@ -6,7 +6,6 @@ var mensagens;
 var participantes;
 var meuUsuario = {};
 var destinatario = "Todos";
-var ultimoDestinatario = null;
 var ultimaVisibilidade = "Público";
 var visibilidade = "message";
 
@@ -162,7 +161,9 @@ function criarLiParticipantes(participante,classe){
     li.classList.add(classe);
 
     var icone = document.createElement('ion-icon');
-    icone.setAttribute('name','people');
+
+    if(participante === "Todos"){icone.setAttribute('name','people');}
+    else {icone.setAttribute('name','person-circle');}
 
     var texto = document.createElement('h6');
     texto.innerText = participante;
