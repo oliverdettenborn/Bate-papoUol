@@ -23,13 +23,15 @@
             <ul class="participantes"></ul>
             <h2>Escolha a visibilidade:</h2>
             <ul class="visibilidade">
-                <li onclick="check(this)">
+                <li onclick="selecionaVisibilidade(this)" class="selecionado">
                     <i class="fas fa-unlock"></i>
                     <h6>Público</h6>
+                    <ion-icon class="checkmark" name="checkmark"></ion-icon>
                 </li>
-                <li onclick="check(this)">
+                <li onclick="selecionaVisibilidade(this)">
                     <i class="fas fa-lock"></i>
                     <h6>Reservadamente</h6>
+                    <ion-icon class="checkmark" name="checkmark"></ion-icon>
                 </li>
             </ul>
         </div>

@@ -153,11 +153,21 @@ aside ul{
 aside li{
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     font-size: 16px;
     font-weight: 500;
     margin-top: 10px;
 }
-
+.checkmark{
+    color: #fff;
+    justify-self: flex-end;
+}
+li h6{
+    flex-grow: 1;
+}
+.selecionado .checkmark{
+    color: green;
+}
 
 /*colocando primeiras letras em maiusculo*/
 

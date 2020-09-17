@@ -5,6 +5,7 @@ var mensagens;
 var participantes;
 var meuUsuario = {};
 var destinatario = "Todos";
+var ultimoDestinatario = null;
 
 iniciarChat();
 
@@ -105,10 +106,10 @@ function renderizarChat(){
 function renderizarParticipantes(){
     listaParticipantes.innerHTML = "";
 
-    criarLiParticipantes("Todos");
+    criarLiParticipantes("Todos","selecionado");
 
     for(var i = 0; i < participantes.length; i++){
-        criarLiParticipantes(participantes[i].name);
+        criarLiParticipantes(participantes[i].name,"none");
     }
 }
 
@@ -148,9 +149,10 @@ function criarElemento(elemento,classe){
     return elementoCriado;
 }
 
-function criarLiParticipantes(participante){
+function criarLiParticipantes(participante,classe){
     var li = document.createElement('li');
-    li.setAttribute('onclick','check(this)');
+    li.setAttribute('onclick','selecionaDestinatario(this)');
+    li.classList.add(classe);
 
     var icone = document.createElement('ion-icon');
     icone.setAttribute('name','people');
@@ -158,8 +160,21 @@ function criarLiParticipantes(participante){
     var texto = document.createElement('h6');
     texto.innerText = participante;
 
-    var filhos = [icone,texto];
+    var checkmark = document.createElement('ion-icon');
+    checkmark.setAttribute('name','checkmark');
+    checkmark.classList.add('checkmark');
+
+
+    var filhos = [icone,texto,checkmark];
     vincularFilhos(listaParticipantes,li,filhos);
+}
+
+function selecionaDestinatario(elemento){
+    
+}
+
+function selecionaVisibilidade(elemento){
+    
 }
 
 function verificaTipo(tipo){
