@@ -1,0 +1,33 @@
+@media (min-width: 800px){
+    aside{
+        right: 0;
+        width: 235px;
+        transition: none;
+    }
+    .fundo{
+        display: none;
+    }
+    body{
+        margin-right: 235px;
+    }
+    main{
+        margin: 0px 5px 80px 5px;
+    }
+    header ion-icon{
+        display: none;
+    }
+    .participantes{
+        overflow-y: auto;
+    }
+    .body:::-webkit-scrollbar{
+        display: none;
+    }
+    .participantes::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    }
+    
+    .participantes::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        outline: 1px solid slategrey;
+    }
+}
