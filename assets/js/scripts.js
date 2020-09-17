@@ -121,14 +121,13 @@ function renderizarMensagem(elemento){
     var time = criarElemento("time");
     time.innerText = elemento.time;
 
-    var divUsuario = criarElemento("div","usuario");
+    var divUsuario = criarElemento("span","usuario");
     divUsuario.innerText = elemento.from;
 
-    var divDestinatario = criarElemento("div","destinatario");
+    var divDestinatario = criarElemento("span","destinatario");
     divDestinatario.innerText = elemento.to;
 
-    var texto = criarElemento("p");
-    texto.innerText = elemento.text;
+    var texto = document.createTextNode(elemento.text)
 
     var checagemReservado = verificaMensagemPrivada(tipo,elemento.from,elemento.to);
 

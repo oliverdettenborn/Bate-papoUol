@@ -22,6 +22,7 @@ header, footer{
     justify-content: space-between;
     align-items: center;
     padding: 0px 20px;
+    backface-visibility: hidden;
 }
 ion-icon{
     font-size: 35px;
@@ -68,10 +69,7 @@ footer input{
 .mensagem{
     width: 100%;
     margin: 3px 0px;
-    padding: 5px;
-    display: inline-flex;
-    flex-wrap: wrap;
-    align-items: center;
+    padding: 7px;
 }
 .entrouOuSaiu{
     background-color: #DCDCDC;
@@ -92,15 +90,15 @@ footer input{
 .usuario, .destinatario{
     font-weight: bold;
     font-size: 16px;
+    padding-right: 3px;
 }
 .mensagem .usuario::first-letter, .mensagem .destinatario:first-letter{
     text-transform: uppercase;
 }
-.mensagem p{
+.texto{
     margin-left: 5px;
     font-size: 16px;
-    display: inline;
-    word-break: break-all;
+    overflow-wrap: break-word;
 }
 
 /*adição dos textos entre usuario e destinario*/
