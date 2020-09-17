@@ -7,7 +7,7 @@ var participantes;
 var meuUsuario = {};
 var destinatario = "Todos";
 var ultimoDestinatario = null;
-var ultimaVisibilidade = null;
+var ultimaVisibilidade = "Público";
 var visibilidade = "message";
 
 iniciarChat();
@@ -71,8 +71,9 @@ function enviarMensagem(){
 }
 
 
-function montarMensagem(input){
-    var textoMensagem = input.value.trim();
+function montarMensagem(){
+    var textoMensagem = input.value;
+    textoMensagem = textoMensagem.trim();
     var time = pegarHoras();
 
     if(textoMensagem === ""){
@@ -82,8 +83,8 @@ function montarMensagem(input){
             "from": meuUsuario.name,
             "to": destinatario,
             "text": textoMensagem,
-            "type": "message",
-            "time": visibildiade
+            "type": visibilidade,
+            "time": time
         }
         input.value = "";
     
@@ -175,8 +176,15 @@ function criarLiParticipantes(participante,classe){
     vincularFilhos(listaParticipantes,li,filhos);
 }
 
-function selecionaDestinatario(elemento){
+function selecionaDestinatario(participanteClidado){
+    var ultimoDestinatario = document.querySelector('.participantes .selecionado');
+    ultimoDestinatario.classList.toggle('selecionado');
+    participanteClidado.classList.toggle('selecionado');
+
+    var novoDestinatario = participanteClidado.querySelector('h6');
+    destinatario = novoDestinatario.innerText;
     
+    mudaplaceholder();
 }
 
 function selecionaVisibilidade(clicado){
@@ -185,15 +193,14 @@ function selecionaVisibilidade(clicado){
     clicado.classList.toggle('selecionado');
     
     var textoNovaVisibilidade = clicado.querySelector('h6');
-    var texto = textoNovaVisibilidade.innerText;
+    ultimaVisibilidade = textoNovaVisibilidade.innerText;
 
-    if(texto === "Público"){
+    if(ultimaVisibilidade === "Público"){
         visibilidade = "message";
-    }else if(texto === "Reservadamente"){
+    }else if(ultimaVisibilidade === "Reservadamente"){
         visibilidade = "private_message";
     }
     
-    ultimaVisibilidade = texto;
     mudaplaceholder();
 }
 
