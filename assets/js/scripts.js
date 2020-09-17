@@ -59,16 +59,13 @@ function enviarMensagem(){
     var dados = montarMensagem();
 
     if(dados !== null){
+        renderizarMensagem(dados);
         axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/messages',dados).catch(processarErroPost);
     }else{
         return
     }
 }
 
-function mostrarMenu(){
-    var menu = document.querySelector("aside");
-    menu.classList.toggle('ativado')
-}
 
 function montarMensagem(input){
     var input = document.querySelector("#postarMensagem");
@@ -83,14 +80,17 @@ function montarMensagem(input){
             "to": destinatario,
             "text": textoMensagem,
             "type": "message",
-            "time": "00:00:00"
+            "time": time
         }
         input.value = "";
     
-        renderizarMensagem(dados);
-    
         return dados;
     }
+}
+
+function mostrarMenu(){
+    var menu = document.querySelector("aside");
+    menu.classList.toggle('ativado')
 }
 
 function renderizarChat(){
@@ -99,7 +99,7 @@ function renderizarChat(){
     for(var i = 0; i < mensagens.length; i++){
         renderizarMensagem(mensagens[i]);
     }
-    window.scrollTo(0,document.body.scrollHeight);
+    scrollAtomatico();
 }
 
 function renderizarParticipantes(){
@@ -133,12 +133,14 @@ function renderizarMensagem(elemento){
     var checagemReservado = verificaMensagemPrivada(tipo,elemento.from,elemento.to);
 
     //verificação se o tipo é status para decidir se renderiza ou não o destinatario
-    var filhos = verificacaoTipoStatusAntesRenderizar(tipo,divMensagem,time,divUsuario,divDestinatario,texto);
+    var filhos = verificacaoTipoStatusAntesRenderizar(divUsuario,divDestinatario,texto,tipo,time);
     
     if(checagemReservado === "ocultar"){
         return;
     }
     vincularFilhos(main,divMensagem,filhos);
+
+    scrollAtomatico();
 }
 
 function criarElemento(elemento,classe){
@@ -182,7 +184,7 @@ function verificaMensagemPrivada(tipo, usuarioOrigem,usuarioDestino){
     }
 }
 
-function verificacaoTipoStatusAntesRenderizar(tipo,divMensagem,time,divUsuario,divDestinatario,texto){
+function verificacaoTipoStatusAntesRenderizar(divUsuario,divDestinatario,texto,tipo,time){
     if(tipo === "entrouOuSaiu"){
         return [time, divUsuario, texto];
         
@@ -192,10 +194,9 @@ function verificacaoTipoStatusAntesRenderizar(tipo,divMensagem,time,divUsuario,d
 }
 
 function vincularFilhos(elementoHTML,pai,filhos){
-    var arrayFilhos = filhos;
 
-    for(var i = 0; i < arrayFilhos.length; i++){
-        pai.appendChild(arrayFilhos[i]);
+    for(var i = 0; i < filhos.length; i++){
+        pai.appendChild(filhos[i]);
     }
     elementoHTML.appendChild(pai);
 }
@@ -204,4 +205,8 @@ function pegarHoras(){
     var data = new Date();
     var horario = data.getHours() + ":" +  data.getMinutes() + ":" + + data.getSeconds();
     return horario;
+}
+
+function scrollAtomatico(){
+    window.scrollTo(0,document.body.scrollHeight);
 }

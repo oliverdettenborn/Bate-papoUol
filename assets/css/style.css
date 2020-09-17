@@ -99,7 +99,8 @@ footer input{
 .mensagem p{
     margin-left: 5px;
     font-size: 16px;
-    word-wrap: break-word;
+    display: inline;
+    word-break: break-all;
 }
 
 /*adição dos textos entre usuario e destinario*/
