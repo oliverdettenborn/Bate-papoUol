@@ -2,8 +2,6 @@ var main = document.querySelector('main');
 var input = document.querySelector("#postarMensagem");
 var listaParticipantes = document.querySelector('.participantes');
 
-var mensagens;
-var participantes;
 var meuUsuario = {};
 var destinatario = "Todos";
 var ultimaVisibilidade = "Público";
@@ -21,7 +19,7 @@ function enviaUsuario(){
 }
 
 function processarSucessoEntradaUsuario(){
-    setInterval(enviarStatus,3000)
+    setInterval(enviarStatus,4500)
     setInterval(buscarMensagens,3000);
     setInterval(buscarParticipantes,10000);
 }
@@ -40,21 +38,18 @@ function buscarParticipantes(){
 }
 
 function enviarStatus(){
-    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/status', meuUsuario);
+    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/status', meuUsuario).catch(processarErroPost);
 }
 
 function processarMensagens(resposta){
-    mensagens = resposta.data;
-    renderizarChat();
+    renderizarChat(resposta.data);
 }
 
 function processarParticipantes(resposta){
-    participantes = resposta.data;
-    renderizarParticipantes();
+    renderizarParticipantes(resposta.data);
 }
 
 function processarErroPost(resposta){
-    console.log("deu erro");
     window.location.reload();
 }
 
@@ -69,6 +64,12 @@ function enviarMensagem(){
     }
 }
 
+function pressionarEnter(){
+    codekey = event.keyCode;
+    if (codekey === 13){
+        enviarMensagem();
+    }
+}
 
 function montarMensagem(){
     var textoMensagem = input.value;
@@ -100,16 +101,15 @@ function fecharMenu(){
     menu.classList.remove('ativado');
 }
 
-function renderizarChat(){
+function renderizarChat(mensagens){
     main.innerHTML = "";
-    //percorrer array
     for(var i = 0; i < mensagens.length; i++){
         renderizarMensagem(mensagens[i]);
     }
     scrollAtomatico();
 }
 
-function renderizarParticipantes(){
+function renderizarParticipantes(participantes){
     listaParticipantes.innerHTML = "";
 
     criarLiParticipantes("Todos","selecionado");
@@ -222,10 +222,15 @@ function verificaTipo(tipo){
 
 function verificaMensagemPrivada(tipo, usuarioOrigem,usuarioDestino){
     if(tipo === "reservado"){
-        if(meuUsuario === usuarioOrigem || meuUsuario === usuarioDestino || usuarioDestino === "Todos" || usuarioDestino === "todos")
+        var euEnviei = meuUsuario === usuarioOrigem;
+        var souDestino = meuUsuario === usuarioDestino;
+        var paraTodoMundo = usuarioDestino === "Todos";
+
+        if(euEnviei || souDestino || paraTodoMundo)
             return "exibir";
         else
             return "ocultar";
+
     }else{
         return "exibir";
     }
