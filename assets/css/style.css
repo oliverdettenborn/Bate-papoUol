@@ -92,14 +92,6 @@ footer input{
     font-size: 16px;
     padding-right: 3px;
 }
-.mensagem .usuario::first-letter, .mensagem .destinatario:first-letter{
-    text-transform: uppercase;
-}
-.texto{
-    margin-left: 5px;
-    font-size: 16px;
-    overflow-wrap: break-word;
-}
 
 /*adição dos textos entre usuario e destinario*/
 .reservado .usuario::after{
@@ -128,8 +120,8 @@ aside{
     z-index: 3;
     display: flex;
     justify-content: flex-end;
-    transition: right 2s ease-out;
-    transition: background 2s ease-out;
+    transition: right 500ms ease-out;
+    transition: background 1s ease-out;
 }
 aside.ativado{
     right: 0px;
@@ -164,4 +156,11 @@ aside li{
     font-size: 16px;
     font-weight: 500;
     margin-top: 10px;
+}
+
+
+/*colocando primeiras letras em maiusculo*/
+
+.participantes h6::first-letter{
+    text-transform: uppercase;
 }

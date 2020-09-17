@@ -122,12 +122,12 @@ function renderizarMensagem(elemento){
     time.innerText = elemento.time;
 
     var divUsuario = criarElemento("span","usuario");
-    divUsuario.innerText = elemento.from;
+    divUsuario.innerText = primeiraLetraMaiuscula(elemento.from);
 
     var divDestinatario = criarElemento("span","destinatario");
-    divDestinatario.innerText = elemento.to;
+    divDestinatario.innerText = primeiraLetraMaiuscula(elemento.to);
 
-    var texto = document.createTextNode(elemento.text)
+    var texto = document.createTextNode(elemento.text);
 
     var checagemReservado = verificaMensagemPrivada(tipo,elemento.from,elemento.to);
 
@@ -186,7 +186,6 @@ function verificaMensagemPrivada(tipo, usuarioOrigem,usuarioDestino){
 function verificacaoTipoStatusAntesRenderizar(divUsuario,divDestinatario,texto,tipo,time){
     if(tipo === "entrouOuSaiu"){
         return [time, divUsuario, texto];
-        
     }else{
         return [time,divUsuario,divDestinatario,texto];
     }
@@ -208,4 +207,8 @@ function pegarHoras(){
 
 function scrollAtomatico(){
     window.scrollTo(0,document.body.scrollHeight);
+}
+
+function primeiraLetraMaiuscula(string){
+    return string[0].toUpperCase() + string.slice(1);
 }
