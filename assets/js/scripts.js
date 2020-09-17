@@ -112,10 +112,10 @@ function renderizarChat(mensagens){
 function renderizarParticipantes(participantes){
     listaParticipantes.innerHTML = "";
 
-    criarLiParticipantes("Todos","selecionado");
+    criarLiParticipantes("Todos");
 
     for(var i = 0; i < participantes.length; i++){
-        criarLiParticipantes(participantes[i].name,"none");
+        criarLiParticipantes(participantes[i].name);
     }
 }
 
@@ -155,10 +155,9 @@ function criarElemento(elemento,classe){
     return elementoCriado;
 }
 
-function criarLiParticipantes(participante,classe){
+function criarLiParticipantes(participante){
     var li = document.createElement('li');
     li.setAttribute('onclick','selecionaDestinatario(this)');
-    li.classList.add(classe);
 
     var icone = document.createElement('ion-icon');
 
@@ -172,6 +171,9 @@ function criarLiParticipantes(participante,classe){
     checkmark.setAttribute('name','checkmark');
     checkmark.classList.add('checkmark');
 
+    if(participante === destinatario){
+        li.classList.add('selecionado');
+    }
 
     var filhos = [icone,texto,checkmark];
     vincularFilhos(listaParticipantes,li,filhos);
@@ -179,12 +181,18 @@ function criarLiParticipantes(participante,classe){
 
 function selecionaDestinatario(participanteClidado){
     var ultimoDestinatario = document.querySelector('.participantes .selecionado');
+    
+    if(ultimoDestinatario === null){
+        destinatario = "Todos";
+        renderizarParticipantes();
+    }
+
     ultimoDestinatario.classList.toggle('selecionado');
     participanteClidado.classList.toggle('selecionado');
 
     var novoDestinatario = participanteClidado.querySelector('h6');
     destinatario = novoDestinatario.innerText;
-    
+    console.log(destinatario)
     mudaplaceholder();
 }
 
@@ -222,8 +230,8 @@ function verificaTipo(tipo){
 
 function verificaMensagemPrivada(tipo, usuarioOrigem,usuarioDestino){
     if(tipo === "reservado"){
-        var euEnviei = meuUsuario === usuarioOrigem;
-        var souDestino = meuUsuario === usuarioDestino;
+        var euEnviei = usuarioOrigem === usuarioOrigem;
+        var souDestino = usuarioOrigem === usuarioDestino;
         var paraTodoMundo = usuarioDestino === "Todos";
 
         if(euEnviei || souDestino || paraTodoMundo)
