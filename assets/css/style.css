@@ -127,7 +127,11 @@ aside.ativado{
     right: 0px;
     background: #5c5c5cc4;
 }
-aside > div{
+.fundo{
+    width: calc(100% - 235px);
+    height: 100%;
+}
+.menu{
     background-color: #FFF;
     width: 235px;
     height: 100%;

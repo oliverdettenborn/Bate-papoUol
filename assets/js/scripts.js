@@ -1,11 +1,13 @@
 var main = document.querySelector('main');
-var windowHeight = window.innerHeight + 75;
+var input = document.querySelector("#postarMensagem");
 var listaParticipantes = document.querySelector('.participantes');
+
 var mensagens;
 var participantes;
 var meuUsuario = {};
 var destinatario = "Todos";
 var ultimoDestinatario = null;
+var visibilidade = "message";
 
 iniciarChat();
 
@@ -69,7 +71,6 @@ function enviarMensagem(){
 
 
 function montarMensagem(input){
-    var input = document.querySelector("#postarMensagem");
     var textoMensagem = input.value.trim();
     var time = pegarHoras();
 
@@ -81,7 +82,7 @@ function montarMensagem(input){
             "to": destinatario,
             "text": textoMensagem,
             "type": "message",
-            "time": time
+            "time": visibildiade
         }
         input.value = "";
     
@@ -91,7 +92,11 @@ function montarMensagem(input){
 
 function mostrarMenu(){
     var menu = document.querySelector("aside");
-    menu.classList.toggle('ativado')
+    menu.classList.add('ativado');
+}
+function fecharMenu(){
+    var menu = document.querySelector("aside");
+    menu.classList.remove('ativado');
 }
 
 function renderizarChat(){
@@ -173,7 +178,19 @@ function selecionaDestinatario(elemento){
     
 }
 
-function selecionaVisibilidade(elemento){
+function selecionaVisibilidade(clicado){
+    var visibilidadeAtual = document.querySelector('.visibilidade .selecionado');
+    visibilidadeAtual.classList.toggle('selecionado');
+    clicado.classList.toggle('selecionado');
+    
+    var textoNovaVisibilidade = clicado.querySelector('h6');
+    var texto = textoNovaVisibilidade.innerText;
+
+    if(texto === "Público"){
+        visibilidade = "message";
+    }else if(texto === "Reservadamente"){
+        visibilidade = "private_message";
+    }
     
 }
 
@@ -189,7 +206,7 @@ function verificaTipo(tipo){
 
 function verificaMensagemPrivada(tipo, usuarioOrigem,usuarioDestino){
     if(tipo === "reservado"){
-        if(meuUsuario === usuarioOrigem || meuUsuario === usuarioDestino)
+        if(meuUsuario === usuarioOrigem || meuUsuario === usuarioDestino || usuarioDestino === "Todos" || usuarioDestino === "todos")
             return "exibir";
         else
             return "ocultar";
