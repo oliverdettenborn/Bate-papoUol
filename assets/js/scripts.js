@@ -7,6 +7,7 @@ var participantes;
 var meuUsuario = {};
 var destinatario = "Todos";
 var ultimoDestinatario = null;
+var ultimaVisibilidade = null;
 var visibilidade = "message";
 
 iniciarChat();
@@ -192,6 +193,13 @@ function selecionaVisibilidade(clicado){
         visibilidade = "private_message";
     }
     
+    ultimaVisibilidade = texto;
+    mudaplaceholder();
+}
+
+function mudaplaceholder(){
+    var novoPlaceholder = "Enviando para " + destinatario + " (" + ultimaVisibilidade + ")";
+    input.setAttribute('placeholder',novoPlaceholder);
 }
 
 function verificaTipo(tipo){
