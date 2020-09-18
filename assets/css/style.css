@@ -176,6 +176,7 @@ aside li{
 }
 li h6{
     word-break: break-all;
+    flex-grow: 1;
 }
 .selecionado .checkmark{
     color: green;
