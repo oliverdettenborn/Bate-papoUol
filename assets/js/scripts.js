@@ -7,7 +7,7 @@ var destinatario = "Todos";
 var ultimaVisibilidade = "Público";
 var visibilidade = "message";
 
-iniciarChat();
+//iniciarChat();
 
 function iniciarChat(){
     meuUsuario.name = prompt("Qual o seu nome?");

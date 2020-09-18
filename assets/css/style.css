@@ -185,3 +185,53 @@ li h6{
 .participantes h6::first-letter{
     text-transform: uppercase;
 }
+
+/*estilos da tela de iniciar*/
+#tela-inicial{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    background-color: #FFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    font-size: 20px;
+    color: inherit;
+    font-weight: bold;
+}
+#tela-inicial .logo{
+    width: 130px;
+    margin-bottom: 85px;
+}
+#tela-inicial #nome{
+    width: 245px;
+    height: 50px;
+    background: #fafafa;
+    border: 1px solid #e8e8e8;
+    color: #bbb;
+    font-weight: 300;
+}
+#tela-inicial button{
+    width: 120px;
+    height: 40px;
+    border: none;
+    background: #e7e7e7;
+    color: #8e8e8e;
+    font-weight: 500;
+}
+#tela-inicial .carregando{
+    width: 90px;
+    height: 90px;
+}
+#tela-inicial .carregando, #tela-inicial #nome, #tela-inicial button{
+    font-size: 20px;
+    font-family: inherit;
+    text-align: center;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
