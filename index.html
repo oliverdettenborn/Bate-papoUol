@@ -11,20 +11,24 @@
     <link rel="stylesheet" href="assets/css/desktop.css">
 </head>
 <body>
-
+    <!------------------------------------------------ tela inicial ----------------------------------------------------------------->
     <section id="tela-inicial">
         <img class="logo" src="imagens/logo.png" alt="logo da Uol">
         <input id="nome" type="text" placeholder="Digite seu nome aqui" onkeypress="pressionaenterEntrarNaSala()">
         <button onclick="iniciarChat()">Entrar</button>
     </section>
 
+    <!------------------------------------------------ menu superior ---------------------------------------------------------------->
     <header>
         <img src="imagens/logo.png" alt="logo da Uol">
         <ion-icon name="people" onclick="mostrarMenu()"></ion-icon>
     </header>
 
+    <!---------------------------------------------- chat de mensagens --------------------------------------------------------------->
     <main></main>
 
+
+    <!---------------------------------------- menu lateral de participantes --------------------------------------------------------->
     <aside>
         <div class="fundo" onclick="fecharMenu()"></div>
         <div class="menu" onclick="mostrarMenu()">
@@ -46,6 +50,7 @@
         </div>
     </aside>
 
+    <!------------------------------------- menu inferior para postar mensagem ----------------------------------------------------->
     <footer>
         <div>
             <h3>Escreva aqui...</h3>
@@ -54,9 +59,12 @@
         <ion-icon name="paper-plane-outline" onclick="enviarMensagem()"></ion-icon>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!--------------------------------------------- script dos icones ---------------------------------------------------------------->
     <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
     <script src="https://kit.fontawesome.com/009afad3fb.js" crossorigin="anonymous"></script>
+    
+    <!----------------------------------------------- script do chat ----------------------------------------------------------------->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="assets/js/scripts.js"></script>
 </body>
 </html>
