@@ -276,7 +276,7 @@ function mostraTelaCarregando(){
 }
 
 function voltarTelaPedirNome(){
-    telaInicial.innerHTML = "<img class='logo' src='imagens/logo.png' alt='logo da Uol'><em>Nome já está em uso!</em><input id='nome' type='text' placeholder='Digite outro nome'><button onclick='iniciarChat()'>Entrar</button>"
+    telaInicial.innerHTML = "<img class='logo' src='imagens/logo.png' alt='logo da Uol'><em>Nome já está em uso!</em><input id='nome' type='text' placeholder='Digite outro nome'onkeypress='pressionaenterEntrarNaSala()'><button onclick='iniciarChat()'>Entrar</button>"
 }
 
 function desativarTelaInicial(){
