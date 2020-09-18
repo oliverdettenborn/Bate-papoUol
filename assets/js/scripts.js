@@ -164,6 +164,7 @@ function criarElemento(elemento,classe){
 function criarLiParticipantes(participante){
     var li = document.createElement('li');
     li.setAttribute('onclick','selecionaDestinatario(this)');
+    li.setAttribute('data-name',participante);
 
     var icone = document.createElement('ion-icon');
 
@@ -190,13 +191,14 @@ function selecionaDestinatario(participanteClidado){
     if(ultimoDestinatario === null){
         destinatario = "Todos";
         renderizarParticipantes();
+        mudaplaceholder();
     }
 
     ultimoDestinatario.classList.toggle('selecionado');
     participanteClidado.classList.toggle('selecionado');
 
-    var novoDestinatario = participanteClidado.querySelector('h6');
-    destinatario = novoDestinatario.innerText;
+    destinatario = participanteClidado.getAttribute('data-name');
+    console.log(destinatario);
     mudaplaceholder();
 }
 
@@ -234,10 +236,10 @@ function verificaTipo(tipo){
 
 function verificaMensagemPrivada(tipo, usuarioOrigem,usuarioDestino){
     if(tipo === "reservado"){
-        var euEnviei = usuarioOrigem === usuarioOrigem;
-        var souDestino = usuarioOrigem === usuarioDestino;
-        var paraTodoMundo = usuarioDestino === "Todos";
-
+        var euEnviei = meuUsuario.name === usuarioOrigem;
+        var souDestino = meuUsuario.name === usuarioDestino;
+        var paraTodoMundo = meuUsuario.name === "Todos";
+        console.log(euEnviei,souDestino,paraTodoMundo);
         if(euEnviei || souDestino || paraTodoMundo)
             return "exibir";
         else
