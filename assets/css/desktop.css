@@ -19,7 +19,7 @@
     .participantes{
         overflow-y: auto;
     }
-    .body:::-webkit-scrollbar{
+    .body::-webkit-scrollbar{
         display: none;
     }
     .participantes::-webkit-scrollbar-track {
