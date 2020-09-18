@@ -1,13 +1,22 @@
+
+//--------------------------------------------------- elementos pai no html --------------------------------------------------------------
 var main = document.querySelector('main');
 var input = document.querySelector("#postarMensagem");
 var listaParticipantes = document.querySelector('.participantes');
 var telaInicial = document.querySelector('#tela-inicial');
 
+
+
+//------------------------------------------------ variaveis globais do algoritmo --------------------------------------------------------------
 var meuUsuario = {};
 var destinatario = "Todos";
 var ultimaVisibilidade = "Público";
 var visibilidade = "message";
 var participantes = [];
+
+
+
+//----------------------------------------------- funções de inicialização do chat -------------------------------------------------------
 
 function pressionaenterEntrarNaSala(){
     codekey = event.keyCode;
@@ -23,6 +32,12 @@ function iniciarChat(){
     mostraTelaCarregando();
     enviaUsuario();
 }
+
+
+
+
+
+//----------------------------------------------- funções de comunicação com servidor-------------------------------------------------------
 
 function enviaUsuario(){
     axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/participants',meuUsuario).then(processarSucessoEntradaUsuario).catch(erroNomeUsuario)
@@ -63,6 +78,10 @@ function processarErroPost(resposta){
     window.location.reload();
 }
 
+
+
+//----------------------------------------------- funções onclick e press enter do chat -------------------------------------------------------
+
 function enviarMensagem(){
     var dados = montarMensagem();
 
@@ -80,28 +99,6 @@ function pressionarEnter(){
         enviarMensagem();
     }
 }
-
-function montarMensagem(){
-    var textoMensagem = input.value;
-    textoMensagem = textoMensagem.trim();
-    var time = pegarHoras();
-
-    if(textoMensagem === ""){
-        return null;
-    }else{
-        var dados = {
-            "from": meuUsuario.name,
-            "to": destinatario,
-            "text": textoMensagem,
-            "type": visibilidade,
-            "time": time
-        }
-        input.value = "";
-    
-        return dados;
-    }
-}
-
 function mostrarMenu(){
     var menu = document.querySelector("aside");
     menu.classList.add('ativado');
@@ -110,6 +107,50 @@ function fecharMenu(){
     var menu = document.querySelector("aside");
     menu.classList.remove('ativado');
 }
+
+function selecionaDestinatario(participanteClidado){
+    var ultimoDestinatario = document.querySelector('.participantes .selecionado');
+    
+    if(ultimoDestinatario === null){
+        destinatario = "Todos";
+        renderizarParticipantes();
+        mudaplaceholder();
+    }
+
+    ultimoDestinatario.classList.toggle('selecionado');
+    participanteClidado.classList.toggle('selecionado');
+
+    destinatario = participanteClidado.getAttribute('data-name');
+    mudaplaceholder();
+}
+
+function selecionaVisibilidade(clicado){
+    var visibilidadeAtual = document.querySelector('.visibilidade .selecionado');
+    visibilidadeAtual.classList.toggle('selecionado');
+    clicado.classList.toggle('selecionado');
+    
+    var textoNovaVisibilidade = clicado.querySelector('h6');
+    ultimaVisibilidade = textoNovaVisibilidade.innerText;
+
+    if(ultimaVisibilidade === "Público"){
+        visibilidade = "message";
+    }else if(ultimaVisibilidade === "Reservadamente"){
+        visibilidade = "private_message";
+    }
+    
+    mudaplaceholder();
+}
+
+function mudaplaceholder(){
+    var novoPlaceholder = "Enviando para " + destinatario + " (" + ultimaVisibilidade + ")";
+    input.setAttribute('placeholder',novoPlaceholder);
+}
+
+
+
+
+
+//--------------------------------------------- funções de renderização dados do servidor -----------------------------------------------------
 
 function renderizarChat(mensagens){
     main.innerHTML = "";
@@ -162,12 +203,6 @@ function renderizarMensagem(elemento){
     scrollAtomatico();
 }
 
-function criarElemento(elemento,classe){
-    var elementoCriado = document.createElement(elemento);
-    elementoCriado.classList.add(classe);
-    return elementoCriado;
-}
-
 function criarLiParticipantes(participante){
     var li = document.createElement('li');
     li.setAttribute('onclick','selecionaDestinatario(this)');
@@ -192,43 +227,9 @@ function criarLiParticipantes(participante){
     vincularFilhos(listaParticipantes,li,filhos);
 }
 
-function selecionaDestinatario(participanteClidado){
-    var ultimoDestinatario = document.querySelector('.participantes .selecionado');
-    
-    if(ultimoDestinatario === null){
-        destinatario = "Todos";
-        renderizarParticipantes();
-        mudaplaceholder();
-    }
 
-    ultimoDestinatario.classList.toggle('selecionado');
-    participanteClidado.classList.toggle('selecionado');
 
-    destinatario = participanteClidado.getAttribute('data-name');
-    mudaplaceholder();
-}
-
-function selecionaVisibilidade(clicado){
-    var visibilidadeAtual = document.querySelector('.visibilidade .selecionado');
-    visibilidadeAtual.classList.toggle('selecionado');
-    clicado.classList.toggle('selecionado');
-    
-    var textoNovaVisibilidade = clicado.querySelector('h6');
-    ultimaVisibilidade = textoNovaVisibilidade.innerText;
-
-    if(ultimaVisibilidade === "Público"){
-        visibilidade = "message";
-    }else if(ultimaVisibilidade === "Reservadamente"){
-        visibilidade = "private_message";
-    }
-    
-    mudaplaceholder();
-}
-
-function mudaplaceholder(){
-    var novoPlaceholder = "Enviando para " + destinatario + " (" + ultimaVisibilidade + ")";
-    input.setAttribute('placeholder',novoPlaceholder);
-}
+//--------------------------------------------- funções de verificação de dados -----------------------------------------------------
 
 function verificaTipo(tipo){
     if(tipo === "status"){
@@ -263,13 +264,11 @@ function verificacaoTipoStatusAntesRenderizar(divUsuario,divDestinatario,texto,t
     }
 }
 
-function vincularFilhos(elementoHTML,pai,filhos){
 
-    for(var i = 0; i < filhos.length; i++){
-        pai.appendChild(filhos[i]);
-    }
-    elementoHTML.appendChild(pai);
-}
+
+
+
+//--------------------------------------------------- funções da tela inicial -----------------------------------------------------------
 
 function mostraTelaCarregando(){
     telaInicial.innerHTML = "<img class='logo' src='imagens/logo.png' alt='logo da Uol'><img class='carregando' src='https://media.giphy.com/media/l3q2SWX1EW3LdD7H2/giphy.gif' alt='carregando'><p>Entrando...</p>"
@@ -283,10 +282,50 @@ function desativarTelaInicial(){
     telaInicial.style.display = 'none';
 }
 
+
+
+
+
+//------------------------------------------ funções acessorias a comunicação e rederização --------------------------------------------------
+function montarMensagem(){
+    var textoMensagem = input.value;
+    textoMensagem = textoMensagem.trim();
+    var time = pegarHoras();
+
+    if(textoMensagem === ""){
+        return null;
+    }else{
+        var dados = {
+            "from": meuUsuario.name,
+            "to": destinatario,
+            "text": textoMensagem,
+            "type": visibilidade,
+            "time": time
+        }
+        input.value = "";
+    
+        return dados;
+    }
+}
+
+function criarElemento(elemento,classe){
+    var elementoCriado = document.createElement(elemento);
+    elementoCriado.classList.add(classe);
+    return elementoCriado;
+}
+
 function pegarHoras(){
     var data = new Date();
     var horario = data.getHours() + ":" +  data.getMinutes() + ":" + + data.getSeconds();
     return horario;
+}
+
+function vincularFilhos(elementoHTML,pai,filhos){
+
+    for(var i = 0; i < filhos.length; i++){
+        pai.appendChild(filhos[i]);
+    }
+    elementoHTML.appendChild(pai);
 }
 
 function scrollAtomatico(){
