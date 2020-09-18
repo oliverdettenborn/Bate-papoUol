@@ -1,32 +1,35 @@
 var main = document.querySelector('main');
 var input = document.querySelector("#postarMensagem");
 var listaParticipantes = document.querySelector('.participantes');
+var telaInicial = document.querySelector('#tela-inicial');
 
 var meuUsuario = {};
 var destinatario = "Todos";
 var ultimaVisibilidade = "Público";
 var visibilidade = "message";
-
-//iniciarChat();
+var participantes = [];
 
 function iniciarChat(){
-    meuUsuario.name = prompt("Qual o seu nome?");
+    var nome = document.querySelector("#nome");
+    meuUsuario.name = nome.value;
+    
+    mostraTelaCarregando();
     enviaUsuario();
 }
 
 function enviaUsuario(){
-    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/participants',meuUsuario).catch(erroNomeUsuario).then(processarSucessoEntradaUsuario)
+    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/uol/participants',meuUsuario).then(processarSucessoEntradaUsuario).catch(erroNomeUsuario)
 }
 
 function processarSucessoEntradaUsuario(){
+    setTimeout(desativarTelaInicial,4000);
     setInterval(enviarStatus,4500)
     setInterval(buscarMensagens,3000);
     setInterval(buscarParticipantes,10000);
 }
 
 function erroNomeUsuario(erro){
-    console.log(erro);
-    meuUsuario.name = prompt("Este nome já está em uso, digite um novo nome?");
+    setTimeout(voltarTelaPedirNome,1500);
 }
 
 function buscarMensagens(){
@@ -109,14 +112,17 @@ function renderizarChat(mensagens){
     scrollAtomatico();
 }
 
-function renderizarParticipantes(participantes){
+function renderizarParticipantes(resposta){
     listaParticipantes.innerHTML = "";
+    participantes = resposta;
 
     criarLiParticipantes("Todos");
 
     for(var i = 0; i < participantes.length; i++){
         criarLiParticipantes(participantes[i].name);
     }
+
+    participantes.push({"name": "Todos"});
 }
 
 function renderizarMensagem(elemento){
@@ -170,8 +176,7 @@ function criarLiParticipantes(participante){
     var checkmark = document.createElement('ion-icon');
     checkmark.setAttribute('name','checkmark');
     checkmark.classList.add('checkmark');
-
-    if(participante === destinatario){
+    if(participante.toUpperCase() == destinatario.toUpperCase()){
         li.classList.add('selecionado');
     }
 
@@ -192,7 +197,6 @@ function selecionaDestinatario(participanteClidado){
 
     var novoDestinatario = participanteClidado.querySelector('h6');
     destinatario = novoDestinatario.innerText;
-    console.log(destinatario)
     mudaplaceholder();
 }
 
@@ -258,6 +262,18 @@ function vincularFilhos(elementoHTML,pai,filhos){
         pai.appendChild(filhos[i]);
     }
     elementoHTML.appendChild(pai);
+}
+
+function mostraTelaCarregando(){
+    telaInicial.innerHTML = "<img class='logo' src='imagens/logo.png' alt='logo da Uol'><img class='carregando' src='https://media.giphy.com/media/l3q2SWX1EW3LdD7H2/giphy.gif' alt='carregando'><p>Entrando...</p>"
+}
+
+function voltarTelaPedirNome(){
+    telaInicial.innerHTML = "<img class='logo' src='imagens/logo.png' alt='logo da Uol'><em>Nome já está em uso!</em><input id='nome' type='text' placeholder='Digite outro nome'><button onclick='iniciarChat()'>Entrar</button>"
+}
+
+function desativarTelaInicial(){
+    telaInicial.style.display = 'none';
 }
 
 function pegarHoras(){
