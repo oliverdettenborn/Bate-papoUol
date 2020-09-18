@@ -9,6 +9,13 @@ var ultimaVisibilidade = "Público";
 var visibilidade = "message";
 var participantes = [];
 
+function pressionaenterEntrarNaSala(){
+    codekey = event.keyCode;
+    if (codekey === 13){
+        iniciarChat();
+    }
+}
+
 function iniciarChat(){
     var nome = document.querySelector("#nome");
     meuUsuario.name = nome.value;
@@ -198,7 +205,6 @@ function selecionaDestinatario(participanteClidado){
     participanteClidado.classList.toggle('selecionado');
 
     destinatario = participanteClidado.getAttribute('data-name');
-    console.log(destinatario);
     mudaplaceholder();
 }
 
@@ -239,7 +245,6 @@ function verificaMensagemPrivada(tipo, usuarioOrigem,usuarioDestino){
         var euEnviei = meuUsuario.name === usuarioOrigem;
         var souDestino = meuUsuario.name === usuarioDestino;
         var paraTodoMundo = meuUsuario.name === "Todos";
-        console.log(euEnviei,souDestino,paraTodoMundo);
         if(euEnviei || souDestino || paraTodoMundo)
             return "exibir";
         else
